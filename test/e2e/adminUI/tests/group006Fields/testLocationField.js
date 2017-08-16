@@ -2,6 +2,7 @@ var fieldTests = require('./commonFieldTestUtils.js');
 var ModelTestConfig = require('../../../modelTestConfig/LocationModelTestConfig');
 
 module.exports = {
+	'@disabled': true,
 	before: function (browser) {
 		fieldTests.before(browser);
 		browser.adminUIInitialFormScreen.setDefaultModelTestConfig(ModelTestConfig);
@@ -63,8 +64,8 @@ module.exports = {
 						'state': 'State A',
 						'postcode': 'AAA AAA',
 						'country': 'AAA',
-						'geoLat': '123',
-						'geoLng': '123'
+						'geoLat': '90',
+						'geoLng': '100'
 					},
 				},
 			],
@@ -83,8 +84,8 @@ module.exports = {
 						'state': 'State A',
 						'postcode': 'AAA AAA',
 						'country': 'AAA',
-						'geoLat': '123',
-						'geoLng': '123'
+						'geoLat': '90',
+						'geoLng': '100'
 					},
 				},
 			],
@@ -115,8 +116,8 @@ module.exports = {
 						'state': 'State A',
 						'postcode': 'AAA AAA',
 						'country': 'AAA',
-						'geoLat': '123',
-						'geoLng': '123'
+						'geoLat': '90',
+						'geoLng': '100'
 					},
 				},
 			],
@@ -150,8 +151,8 @@ module.exports = {
 						'state': 'State B',
 						'postcode': 'BBB BBB',
 						'country': 'BBB',
-						'geoLat': '123',
-						'geoLng': '123'
+						'geoLat': '90',
+						'geoLng': '100'
 					},
 				},
 			],
@@ -175,8 +176,8 @@ module.exports = {
 						'state': 'State A',
 						'postcode': 'AAA AAA',
 						'country': 'AAA',
-						'geoLat': '123',
-						'geoLng': '123'
+						'geoLat': '90',
+						'geoLng': '100'
 					},
 				},
 				{
@@ -189,8 +190,8 @@ module.exports = {
 						'state': 'State B',
 						'postcode': 'BBB BBB',
 						'country': 'BBB',
-						'geoLat': '123',
-						'geoLng': '123'
+						'geoLat': '90',
+						'geoLng': '100'
 					},
 				},
 			],

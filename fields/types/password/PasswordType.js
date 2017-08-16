@@ -82,11 +82,9 @@ password.prototype.addToSchema = function (schema) {
 		if (!this.isModified(field.path) || !this[needs_hashing]) {
 			return next();
 		}
-		// reset the [needs_hashing] flag so that new values can't be hashed more than once
-		// (inherited models double up on pre save handlers for password fields)
-		this[needs_hashing] = false;
 		if (!this.get(field.path)) {
 			this.set(field.path, undefined);
+			this[needs_hashing] = false;
 			return next();
 		}
 		var item = this;
@@ -100,6 +98,9 @@ password.prototype.addToSchema = function (schema) {
 				}
 				// override the cleartext password with the hashed one
 				item.set(field.path, hash);
+				// reset [needs_hashing] so that new values can't be hashed more than once
+				// (inherited models double up on pre save handlers for password fields)
+				item[needs_hashing] = false;
 				next();
 			});
 		});
@@ -114,6 +115,18 @@ password.prototype.addFilterToQuery = function (filter) {
 	var query = {};
 	query[this.path] = (filter.exists) ? { $ne: null } : null;
 	return query;
+};
+
+/**
+ * Retrieves the field value
+ *
+ * Password fields  values are returned as booleans to indicate whether a value
+ * has been set or not, so that we don't leak hashed passwords via API
+ *
+ * @api public
+ */
+password.prototype.getData = function (item) {
+	return item.get(this.path) ? true : false;
 };
 
 /**

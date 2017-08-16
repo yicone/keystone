@@ -2,7 +2,12 @@ import DateInput from '../../components/DateInput';
 import Field from '../Field';
 import moment from 'moment';
 import React from 'react';
-import { Button, InputGroup, FormInput } from 'elemental';
+import {
+	Button,
+	FormInput,
+	InlineGroup as Group,
+	InlineGroupSection as Section,
+} from '../../../admin/client/App/elemental';
 
 /*
 TODO: Implement yearRange Prop, or deprecate for max / min values (better)
@@ -38,20 +43,22 @@ module.exports = Field.create({
 			value: value,
 		});
 	},
-	moment (value) {
-		var m = moment(value);
-		if (this.props.isUTC) m.utc();
-		return m;
+	toMoment (value) {
+		if (this.props.isUTC) {
+			return moment.utc(value);
+		} else {
+			return moment(value);
+		}
 	},
 	isValid (value) {
-		return this.moment(value, this.inputFormat).isValid();
+		return this.toMoment(value, this.inputFormat).isValid();
 	},
 	format (value) {
-		return value ? this.moment(value).format(this.props.formatString) : '';
+		return value ? this.toMoment(value).format(this.props.formatString) : '';
 	},
 	setToday () {
 		this.valueChanged({
-			value: this.moment(new Date()).format(this.props.inputFormat),
+			value: this.toMoment(new Date()).format(this.props.inputFormat),
 		});
 	},
 	renderValue () {
@@ -62,13 +69,14 @@ module.exports = Field.create({
 		);
 	},
 	renderField () {
-		let value = this.moment(this.props.value);
-		value = this.props.value && value.isValid()
-			? value.format(this.props.inputFormat)
+		var dateAsMoment = this.toMoment(this.props.value);
+		var value = this.props.value && dateAsMoment.isValid()
+			? dateAsMoment.format(this.props.inputFormat)
 			: this.props.value;
+
 		return (
-			<InputGroup>
-				<InputGroup.Section grow>
+			<Group>
+				<Section grow>
 					<DateInput
 						format={this.props.inputFormat}
 						name={this.getInputName(this.props.path)}
@@ -76,11 +84,11 @@ module.exports = Field.create({
 						ref="dateInput"
 						value={value}
 					/>
-				</InputGroup.Section>
-				<InputGroup.Section>
+				</Section>
+				<Section>
 					<Button onClick={this.setToday}>Today</Button>
-				</InputGroup.Section>
-			</InputGroup>
+				</Section>
+			</Group>
 		);
 	},
 
