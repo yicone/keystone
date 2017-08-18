@@ -176,6 +176,7 @@
     "test-cov": "istanbul cover ./node_modules/mocha/bin/_mocha",
     "posttest-cov": "if [ -n \"$CODECLIMATE_REPO_TOKEN\" ]; then codeclimate-test-reporter < coverage/lcov.info; fi",
     "clean": "rimraf ./coverage",
-    "fields-explorer": "node ./fields/explorer/server.js"
+    "fields-explorer": "node ./fields/explorer/server.js",
+    "docs": "cd www && yarn install && yarn build"
   }
 }
