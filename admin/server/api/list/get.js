@@ -44,7 +44,7 @@ module.exports = function (req, res) {
 			if (!includeCount) {
 				return next(null, 0);
 			}
-			query.count(next);
+			query._count(next);
 		},
 		function (count, next) {
 			if (!includeResults) {
@@ -56,9 +56,15 @@ module.exports = function (req, res) {
 			if (sort.string) {
 				query.sort(sort.string);
 			}
-			query.exec(function (err, items) {
-				next(err, count, items);
-			});
+			// query.exec(function (err, items) {
+			// 	next(err, count, items);
+			// });
+			// 因为 thinky.query.exec 已被实现为 run() -> Promise，此处需要 run(cb) -> void
+			query.run().then(items => {
+				next(null, count, items)
+			}).error(err => {if(err) {
+				next(err)
+			}})
 		},
 	], function (err, count, items) {
 		if (err) {
