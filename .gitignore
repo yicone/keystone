@@ -57,3 +57,7 @@ typings/
 # dotenv environment variables file
 .env
 
+.vscode
+bundles
+jsconfig.json
+admin/public/js/packages.js
