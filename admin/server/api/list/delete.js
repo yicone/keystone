@@ -32,14 +32,16 @@ module.exports = function (req, res) {
 	}
 	var deletedCount = 0;
 	var deletedIds = [];
-	req.list.model.find().where('_id').in(ids).exec(function (err, results) {
+	req.list.model.filter(function (doc) { return req.keystone.thinky.r.expr(ids).contains(doc('id')); }).exec(function (err, results) {
+	// req.list.model.find().where('_id').in(ids).exec(function (err, results) {
 		if (err) {
 			console.log('Error deleting ' + req.list.key + ' items:', err);
 			return res.apiError('database error', err);
 		}
 		async.forEachLimit(results, 10, function (item, next) {
-			item.remove(function (err) {
-				if (err) return next(err);
+			// 因为无法引用到 thinky.Document，所以不能修改其 prototype
+			item.delete().nodeify(function(err, result){
+				if(err) return next(err);
 				deletedCount++;
 				deletedIds.push(item.id);
 				next();
