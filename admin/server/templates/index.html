@@ -27,7 +27,7 @@
     <script src="<%= adminPath %>/js/lib/cloudinary/jquery.cloudinary.js"></script>
     <%- cloudinaryScript %>
 <% } } -%>
-<% if (fieldTypes.code) { -%>
+<% if (fieldTypes.code || fieldTypes.json) { -%>
     <script src="<%= codemirrorPath %>/codemirror-compressed.js"></script>
 <% } -%>
     <script src="<%= adminPath %>/js/packages.js"></script>
