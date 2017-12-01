@@ -19,6 +19,7 @@ function relationship (list, path, options) {
 	this._underscoreMethods = ['format', 'getExpandedData'];
 	this._properties = ['isValid', 'many', 'filters', 'createInline'];
 	relationship.super_.call(this, list, path, options);
+	this.thinkyRelation = options.thinkyRelation;
 }
 relationship.properName = 'Relationship';
 util.inherits(relationship, FieldType);
@@ -80,6 +81,12 @@ relationship.prototype.addToSchema = function (schema) {
 		refList: this.options.refListPath || this.path + 'RefList',
 	};
 	schema.path(this.path, this.many ? [def] : def);
+
+	// 追加 thinkySchema
+	var foo = schema.path(this.path);
+	foo.options.thinkySchema = this.options.thinkySchema;
+	foo.options.thinkyRelation = this.options.thinkyRelation;
+
 	schema.virtual(this.paths.refList).get(function () {
 		return keystone.list(field.options.ref);
 	});
