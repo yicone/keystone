@@ -38,7 +38,11 @@ module.exports = function (req, res) {
 	}
 	if (req.query.expandRelationshipFields && req.query.expandRelationshipFields !== 'false') {
 		req.list.relationshipFields.forEach(function (i) {
-			query.populate(i.path);
+			// query.populate(i.path);
+			var ref = i.thinkyRelation.fieldName;
+			var modelToGet = {};
+			modelToGet[ref] = true;
+			query = query.getJoin(modelToGet);
 		});
 	}
 	var sort = req.list.expandSort(req.query.sort);
