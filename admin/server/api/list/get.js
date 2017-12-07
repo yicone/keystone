@@ -26,10 +26,13 @@ module.exports = function (req, res) {
 	if (typeof filters === 'object') {
 		assign(where, req.list.addFiltersToQuery(filters));
 	}
+	var prediction = {};
 	if (req.query.search) {
-		assign(where, req.list.addSearchToQuery(req.query.search));
+		// assign(where, req.list.addSearchToQuery(req.query.search));
+		prediction = req.list.addSearchToQuery2(req.query.search);
 	}
-	var query = req.list.model.find(where);
+	// var query = req.list.model.find(where);
+	var query = req.list.model.filter(prediction);
 	if (req.query.populate) {
 		query.populate(req.query.populate);
 	}
