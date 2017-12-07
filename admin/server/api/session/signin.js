@@ -17,6 +17,9 @@ function signin (req, res) {
 	}).run(function (err, users) {
 		let user = users[0];
 		if (user) {
+			// solve circular reference in json serialization
+			delete user.list;
+
 			keystone.callHook(user, 'pre:signin', function (err) {
 				if (err) return res.status(500).json({ error: 'pre:signin error', detail: err });
 				user._.password.compare(req.body.password, function (err, isMatch) {
