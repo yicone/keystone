@@ -105,7 +105,8 @@ Keystone.prototype.prefixModel = function (key) {
 		key = modelPrefix + '_' + key;
 	}
 
-	return require('mongoose/lib/utils').toCollectionName(key);
+	// return require('mongoose/lib/utils').toCollectionName(key);
+	return key;
 };
 
 /* Attach core functionality to Keystone.prototype */
