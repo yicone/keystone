@@ -10,8 +10,12 @@ function signin (req, res) {
 		return res.status(401).json({ error: 'email and password required' });
 	}
 	var User = keystone.list(keystone.get('user model'));
-	var emailRegExp = new RegExp('^' + utils.escapeRegExp(req.body.email) + '$', 'i');
-	User.model.findOne({ email: emailRegExp }).exec(function (err, user) {
+	// var emailRegExp = new RegExp('^' + utils.escapeRegExp(req.body.email) + '$', 'i');
+	var emailRegExp = `(?i)^${utils.escapeRegExp(req.body.email)}$`;
+	User.model.filter(function (doc) {
+		return doc('email').match(emailRegExp);
+	}).run(function (err, users) {
+		let user = users[0];
 		if (user) {
 			keystone.callHook(user, 'pre:signin', function (err) {
 				if (err) return res.status(500).json({ error: 'pre:signin error', detail: err });
