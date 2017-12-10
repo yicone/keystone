@@ -88,6 +88,8 @@ var Keystone = function () {
 	this.set('mongoose', require('mongoose'));
 	this.mongoose.Promise = require('es6-promise').Promise;
 
+	this.set('thinky', require('thinky'));
+
 	// Attach middleware packages, bound to this instance
 	this.middleware = {
 		api: require('./lib/middleware/api')(this),
