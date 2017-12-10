@@ -60,4 +60,3 @@ typings/
 .vscode
 bundles
 jsconfig.json
-admin/public/js/packages.js
