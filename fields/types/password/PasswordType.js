@@ -107,6 +107,40 @@ password.prototype.addToSchema = function (schema) {
 	this.bindUnderscoreMethods();
 };
 
+password.prototype.addToModel = function (Model) {
+	var field = this;
+	var needs_hashing = '__' + field.path + '_needs_hashing';
+
+	Model.pre('save', function (next) {
+		// 断言 this 的类型为 thinky Document
+		// TODO: 密码值没有变化时，不需要也不可以再次hash
+		if (!this[needs_hashing]) {
+			return next();
+		}
+		// reset the [needs_hashing] flag so that new values can'tbe hashed more than once
+		// (inherited models double up on pre save handlers for password fields)
+		this[needs_hashing] = false;
+		if (!this.get(field.path)) {
+			this.set(field.path, undefined);
+			return next();
+		}
+		var item = this;
+		bcrypt.genSalt(field.workFactor, function (err, salt) {
+			if (err) {
+				return next(err);
+			}
+			bcrypt.hash(item.get(field.path), salt, function () {}, function (err, hash) {
+				if (err) {
+					return next(err);
+				}
+				// override the cleartext password with the hashed one
+				item.set(field.path, hash);
+				next();
+			});
+		});
+	});
+};
+
 /**
  * Add filters to a query
  */
