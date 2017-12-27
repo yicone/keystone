@@ -56,7 +56,8 @@ function truthy (value) {
 }
 
 relationship.prototype.getExpandedData = function (item) {
-	var value = item.get(this.path);
+	var path = this.thinkyRelation.fieldName;
+	var value = item.get(path);
 	if (this.many) {
 		if (!value || !Array.isArray(value)) return [];
 		return value.map(expandRelatedItemData.bind(this)).filter(truthy);
