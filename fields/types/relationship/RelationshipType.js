@@ -130,6 +130,28 @@ relationship.prototype.addFilterToQuery = function (filter) {
 	return query;
 };
 
+relationship.prototype.addFilterToQuery2 = function (filter) {
+	var func;
+	if (!Array.isArray(filter.value)) {
+		if (typeof filter.value === 'string' && filter.value) {
+			filter.value = [filter.value];
+		} else {
+			filter.value = [];
+		}
+	}
+	const r = keystone.thinky.r;
+	if (filter.value.length) {
+		func = (filter.inverted) ? (doc) => r.expr(filter.value).contains(doc(this.path)).not() : (doc) => r.expr(filter.value).contains(doc(this.path));
+	} else {
+		if (this.many) {
+			query[this.path] = (filter.inverted) ? { $not: { $size: 0 } } : { $size: 0 };
+		} else {
+			query[this.path] = (filter.inverted) ? { $ne: null } : null;
+		}
+	}
+	return func;
+};
+
 /**
  * Formats the field value
  */

@@ -3,7 +3,7 @@ var assign = require('object-assign');
 var listToArray = require('list-to-array');
 
 module.exports = function (req, res) {
-	var where = {};
+	// var where = {};
 	var fields = req.query.fields;
 	var includeCount = req.query.count !== 'false';
 	var includeResults = req.query.results !== 'false';
@@ -18,21 +18,27 @@ module.exports = function (req, res) {
 			return res.status(401).json({ error: 'fields must be undefined, a string, or an array' });
 		}
 	}
+	// convert model to query
+	var query = req.list.model.filter({});
 	var filters = req.query.filters;
 	if (filters && typeof filters === 'string') {
 		try { filters = JSON.parse(req.query.filters); }
 		catch (e) { } // eslint-disable-line no-empty
 	}
 	if (typeof filters === 'object') {
-		assign(where, req.list.addFiltersToQuery(filters));
+		// assign(where, req.list.addFiltersToQuery(filters));
+		let funcs = req.list.addFiltersToQuery2(filters);
+		funcs.forEach(func => {
+			query = query.filter(func);
+		});
 	}
-	var prediction = {};
 	if (req.query.search) {
 		// assign(where, req.list.addSearchToQuery(req.query.search));
-		prediction = req.list.addSearchToQuery2(req.query.search);
+		let prediction = req.list.addSearchToQuery2(req.query.search);
+		query = query.filter(prediction);
 	}
 	// var query = req.list.model.find(where);
-	var query = req.list.model.filter(prediction);
+
 	if (req.query.populate) {
 		query.populate(req.query.populate);
 	}
@@ -68,10 +74,12 @@ module.exports = function (req, res) {
 			// });
 			// 因为 thinky.query.exec 已被实现为 run() -> Promise，此处需要 run(cb) -> void
 			query.run().then(items => {
-				next(null, count, items)
-			}).error(err => {if(err) {
-				next(err)
-			}})
+				next(null, count, items);
+			}).error(err => {
+				if (err) {
+					next(err);
+				}
+			});
 		},
 	], function (err, count, items) {
 		if (err) {
