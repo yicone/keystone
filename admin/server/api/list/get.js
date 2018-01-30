@@ -67,7 +67,7 @@ module.exports = function (req, res) {
 			query.limit(Number(req.query.limit) || 100);
 			query.skip(Number(req.query.skip) || 0);
 			if (sort.string) {
-				query.sort(sort.string);
+				query = query.sort(sort.string);
 			}
 			// query.exec(function (err, items) {
 			// 	next(err, count, items);
