@@ -57,15 +57,15 @@ module.exports = function (req, res) {
 			if (!includeCount) {
 				return next(null, 0);
 			}
-			query._count(next);
+			query.count(next);
 		},
 		function (count, next) {
 			if (!includeResults) {
 				return next(null, count, []);
 			}
-			query.find();
-			query.limit(Number(req.query.limit) || 100);
-			query.skip(Number(req.query.skip) || 0);
+			// query.find();
+			query = query.limit(Number(req.query.limit) || 100);
+			query = query.skip(Number(req.query.skip) || 0);
 			if (sort.string) {
 				query = query.sort(sort.string);
 			}
