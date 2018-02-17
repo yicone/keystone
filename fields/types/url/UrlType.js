@@ -25,6 +25,7 @@ url.prototype.validateRequiredInput = TextType.prototype.validateRequiredInput;
 
 /* Inherit from TextType prototype */
 url.prototype.addFilterToQuery = TextType.prototype.addFilterToQuery;
+url.prototype.addFilterToQuery2 = TextType.prototype.addFilterToQuery2;
 
 /**
  * Formats the field value using either a supplied format function or default

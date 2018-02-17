@@ -126,6 +126,25 @@ select.prototype.addFilterToQuery = function (filter) {
 	return query;
 };
 
+select.prototype.addFilterToQuery2 = function (filter) {
+	var query = {};
+	if (!Array.isArray(filter.value)) {
+		if (filter.value) {
+			filter.value = [filter.value];
+		} else {
+			filter.value = [];
+		}
+	}
+	const r = this.list.keystone.thinky.r;
+	if (filter.value.length > 0) {
+		query = doc => r.expr(filter.value).contains(doc(this.path)).ne(filter.inverted);
+	} else {
+		query = doc => r.or(doc.hasFields(this.path).not(), doc(this.path).eq('')).ne(filter.inverted);
+	}
+
+	return query;
+};
+
 /**
  * Asynchronously confirms that the provided value is valid
  */

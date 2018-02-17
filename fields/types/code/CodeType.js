@@ -28,6 +28,7 @@ code.prototype.validateRequiredInput = TextType.prototype.validateRequiredInput;
 
 /* Inherit from TextType prototype */
 code.prototype.addFilterToQuery = TextType.prototype.addFilterToQuery;
+code.prototype.addFilterToQuery2 = TextType.prototype.addFilterToQuery2;
 
 /* Export Field Type */
 module.exports = code;

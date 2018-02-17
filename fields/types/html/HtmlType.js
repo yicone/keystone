@@ -25,6 +25,7 @@ html.prototype.validateRequiredInput = TextType.prototype.validateRequiredInput;
 
 /* Inherit from TextType prototype */
 html.prototype.addFilterToQuery = TextType.prototype.addFilterToQuery;
+html.prototype.addFilterToQuery2 = TextType.prototype.addFilterToQuery2;
 
 /* Export Field Type */
 module.exports = html;

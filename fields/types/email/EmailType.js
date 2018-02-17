@@ -20,6 +20,7 @@ util.inherits(email, FieldType);
 
 /* Inherit from TextType prototype */
 email.prototype.addFilterToQuery = TextType.prototype.addFilterToQuery;
+email.prototype.addFilterToQuery2 = TextType.prototype.addFilterToQuery2;
 
 /**
  * Generate a gravatar image request url

@@ -38,6 +38,7 @@ json.prototype.validateRequiredInput = TextType.prototype.validateRequiredInput;
 
 /* Inherit from TextType prototype */
 json.prototype.addFilterToQuery = TextType.prototype.addFilterToQuery;
+json.prototype.addFilterToQuery2 = TextType.prototype.addFilterToQuery2;
 
 /**
  * Gets the field's data from an Item, as used by the React components

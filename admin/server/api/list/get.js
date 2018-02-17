@@ -27,9 +27,9 @@ module.exports = function (req, res) {
 	}
 	if (typeof filters === 'object') {
 		// assign(where, req.list.addFiltersToQuery(filters));
-		let funcs = req.list.addFiltersToQuery2(filters);
-		funcs.forEach(func => {
-			query = query.filter(func);
+		let predictions = req.list.addFiltersToQuery2(filters);
+		predictions.forEach(prediction => {
+			query = query.filter(prediction);
 		});
 	}
 	if (req.query.search) {

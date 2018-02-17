@@ -20,6 +20,7 @@ color.prototype.validateRequiredInput = TextType.prototype.validateRequiredInput
 
 /* Inherit from TextType prototype */
 color.prototype.addFilterToQuery = TextType.prototype.addFilterToQuery;
+color.prototype.addFilterToQuery2 = TextType.prototype.addFilterToQuery2;
 
 /* Export Field Type */
 module.exports = color;

@@ -62,6 +62,29 @@ text.prototype.addFilterToQuery = function (filter) {
 	return query;
 };
 
+text.prototype.addFilterToQuery2 = function (filter) {
+	var query = {};
+	const r = this.list.keystone.thinky.r;
+	if (filter.mode === 'exactly' && !filter.value) {
+		// TODO: 不确定 keysotne 此种 filter 组合是否应过滤字段未定义的 docs
+		query = doc => r.or(doc.hasFields(this.path).not(), doc(this.path).eq('')).ne(filter.inverted);
+		return query;
+	}
+	var value = utils.escapeRegExp(filter.value);
+	if (filter.mode === 'beginsWith') {
+		value = '^' + value;
+	} else if (filter.mode === 'endsWith') {
+		value = value + '$';
+	} else if (filter.mode === 'exactly') {
+		value = '^' + value + '$';
+	}
+	// value = new RegExp(value, filter.caseSensitive ? '' : 'i');
+	value = (filter.caseSensitive ? '' : '(?i)') + utils.escapeRegExp(value);
+	// query[this.path] = filter.inverted ? { $not: value } : value;
+	query = r.row(this.path).match(value).ne(filter.inverted);
+	return query;
+};
+
 /**
  * Crops the string to the specifed length.
  */

@@ -131,7 +131,7 @@ relationship.prototype.addFilterToQuery = function (filter) {
 };
 
 relationship.prototype.addFilterToQuery2 = function (filter) {
-	var func;
+	var query = {};
 	if (!Array.isArray(filter.value)) {
 		if (typeof filter.value === 'string' && filter.value) {
 			filter.value = [filter.value];
@@ -141,15 +141,16 @@ relationship.prototype.addFilterToQuery2 = function (filter) {
 	}
 	const r = keystone.thinky.r;
 	if (filter.value.length) {
-		func = (filter.inverted) ? (doc) => r.expr(filter.value).contains(doc(this.path)).not() : (doc) => r.expr(filter.value).contains(doc(this.path));
+		query = doc => r.expr(filter.value).contains(doc(this.path)).ne(filter.inverted);
 	} else {
+		// TODO: migration
 		if (this.many) {
 			query[this.path] = (filter.inverted) ? { $not: { $size: 0 } } : { $size: 0 };
 		} else {
 			query[this.path] = (filter.inverted) ? { $ne: null } : null;
 		}
 	}
-	return func;
+	return query;
 };
 
 /**

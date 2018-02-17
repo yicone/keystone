@@ -53,6 +53,17 @@ boolean.prototype.addFilterToQuery = function (filter) {
 	return query;
 };
 
+boolean.prototype.addFilterToQuery2 = function (filter) {
+	var query = {};
+	const r = this.list.keystone.thinky.r;
+	if (!filter.value || filter.value === 'false') {
+		query = r.row(this.path).not();
+	} else {
+		query = r.row(this.path);
+	}
+	return query;
+};
+
 /**
  * Validates that a truthy value for this field has been provided in a data object.
  * Useful for checkboxes that are required to be true (e.g. agreed to terms and cond's)
