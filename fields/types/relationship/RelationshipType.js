@@ -141,7 +141,7 @@ relationship.prototype.addFilterToQuery2 = function (filter) {
 	}
 	const r = keystone.thinky.r;
 	if (filter.value.length) {
-		query = doc => r.expr(filter.value).contains(doc(this.path)).ne(filter.inverted);
+		query = doc => r.expr(filter.value).contains(doc(this.path)).ne(filter.inverted || false);
 	} else {
 		// TODO: migration
 		if (this.many) {

@@ -67,7 +67,7 @@ text.prototype.addFilterToQuery2 = function (filter) {
 	const r = this.list.keystone.thinky.r;
 	if (filter.mode === 'exactly' && !filter.value) {
 		// TODO: 不确定 keysotne 此种 filter 组合是否应过滤字段未定义的 docs
-		query = doc => r.or(doc.hasFields(this.path).not(), doc(this.path).eq('')).ne(filter.inverted);
+		query = doc => r.or(doc.hasFields(this.path).not(), doc(this.path).eq('')).ne(filter.inverted || false);
 		return query;
 	}
 	var value = utils.escapeRegExp(filter.value);
@@ -81,7 +81,7 @@ text.prototype.addFilterToQuery2 = function (filter) {
 	// value = new RegExp(value, filter.caseSensitive ? '' : 'i');
 	value = (filter.caseSensitive ? '' : '(?i)') + utils.escapeRegExp(value);
 	// query[this.path] = filter.inverted ? { $not: value } : value;
-	query = r.row(this.path).match(value).ne(filter.inverted);
+	query = r.row(this.path).match(value).ne(filter.inverted || false);
 	return query;
 };
 

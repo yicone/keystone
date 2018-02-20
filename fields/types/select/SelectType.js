@@ -137,9 +137,9 @@ select.prototype.addFilterToQuery2 = function (filter) {
 	}
 	const r = this.list.keystone.thinky.r;
 	if (filter.value.length > 0) {
-		query = doc => r.expr(filter.value).contains(doc(this.path)).ne(filter.inverted);
+		query = doc => r.expr(filter.value).contains(doc(this.path)).ne(filter.inverted || false);
 	} else {
-		query = doc => r.or(doc.hasFields(this.path).not(), doc(this.path).eq('')).ne(filter.inverted);
+		query = doc => r.or(doc.hasFields(this.path).not(), doc(this.path).eq('')).ne(filter.inverted || false);
 	}
 
 	return query;
