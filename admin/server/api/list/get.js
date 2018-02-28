@@ -64,11 +64,11 @@ module.exports = function (req, res) {
 				return next(null, count, []);
 			}
 			// query.find();
-			query = query.skip(Number(req.query.skip) || 0);
-			query = query.limit(Number(req.query.limit) || 100);
 			if (sort.string) {
 				query = query.sort(sort.string);
 			}
+			query = query.skip(Number(req.query.skip) || 0);
+			query = query.limit(Number(req.query.limit) || 100);
 			// query.exec(function (err, items) {
 			// 	next(err, count, items);
 			// });
